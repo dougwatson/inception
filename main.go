@@ -6,16 +6,17 @@ import (
 	"unsafe"
 )
 
-func example(str string) {
-	fmt.Printf("%v, World!", str)
+func example(str []string) {
+	fmt.Printf("%v, World!", str[0])
 }
 
 func main() {
 	f := example
 	ptrString := fmt.Sprintf("%d", &f)
-	runMe(ptrString, "HELLO")
+	arr:=[]string{"HELLO"}
+	runMe(ptrString, arr)
 }
-func runMe(ptrString, str string) {
+func runMe(ptrString string,args []string) {
 	//Convert it to a uint64
 	ptrInt, _ := strconv.ParseUint(ptrString, 10, 64)
 
@@ -29,10 +30,10 @@ func runMe(ptrString, str string) {
 	ptr := unsafe.Pointer(ptrVal)
 
 	//Get the string pointer by address
-	funcPtr := (*func(string))(ptr)
+	funcPtr := (*func([]string))(ptr)
 
 	fmt.Printf("funcPtr %d Type=%T\n", funcPtr, funcPtr)
 
 	//Run the function
-	(*funcPtr)(str)
+	(*funcPtr)(args)
 }
